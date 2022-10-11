@@ -25,12 +25,6 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     private void init()
     {
         message = findViewById(R.id.message);
-
-        System.out.println("******************************");
-        System.out.println("******************************");
-        System.out.println(getIntent());
-        System.out.println("******************************");
-        System.out.println("******************************");
         Intent intent = getIntent();
         String message_received = intent.getStringExtra("message");
 
@@ -46,7 +40,8 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         switch(view.getId())
         {
             case R.id.reply_button:
-                replyMessage();
+                //replyMessage();
+                reply();
                 break;
 
             default:
@@ -58,5 +53,13 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         String reply = reply_edit.getText().toString();
         intent.putExtra("reply", reply);
         startActivity(intent);
+    }
+
+    public void reply()
+    {
+        Intent replyIntent = new Intent();
+        replyIntent.putExtra("reply", reply_edit.getText().toString());
+        setResult(RESULT_OK, replyIntent);
+        finish();
     }
 }

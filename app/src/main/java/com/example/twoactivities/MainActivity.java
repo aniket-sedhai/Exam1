@@ -1,10 +1,17 @@
 package com.example.twoactivities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,8 +68,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, SecondActivity.class);
         String message = message_edittext.getText().toString();
         intent.putExtra("message", message);
-        startActivity(intent);
+        //startActivity(intent);
+        mStartForResult.launch(intent);
+        //startActivityForResult(intent, 1);
     }
+
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+
+                    if (result.getResultCode() == RESULT_OK)
+                    {
+                        Intent intent = result.getData();
+                        reply.setVisibility(View.VISIBLE);
+                        reply_view.setVisibility(View.VISIBLE);
+                        reply.setText(intent.getStringExtra("reply"));
+                        message_edittext.setText("");
+                        getCurrentFocus().clearFocus();
+                    }
+                }
+            }
+    );
+
 
     /**
      * This function will check the intent if there is any extra using the string that is passed
@@ -78,4 +106,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             reply.setText(intent.getStringExtra("reply"));
         }
     }
+
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 1)
+//        {
+//            if (resultCode == RESULT_OK)
+//            {
+//                message_edittext.setText("");
+//                reply.setVisibility(View.VISIBLE);
+//                reply_view.setVisibility(View.VISIBLE);
+//                reply.setText(data.getStringExtra("reply"));
+//            }
+//
+//        }
+//    }
 }
