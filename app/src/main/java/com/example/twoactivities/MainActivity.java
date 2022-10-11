@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         reply_view = findViewById(R.id.reply_view);
         reply = findViewById(R.id.reply);
-        displayMessage("reply");
         send_button = findViewById(R.id.send_button);
         send_button.setOnClickListener(this);
         message_edittext = (EditText) findViewById(R.id.message_edit);
@@ -68,9 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, SecondActivity.class);
         String message = message_edittext.getText().toString();
         intent.putExtra("message", message);
-        //startActivity(intent);
         mStartForResult.launch(intent);
-        //startActivityForResult(intent, 1);
     }
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -90,39 +87,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
     );
-
-
-    /**
-     * This function will check the intent if there is any extra using the string that is passed
-     * @param string the string that is used to pass a message/data with
-     */
-    public void displayMessage(String string)
-    {
-        Intent intent = getIntent();
-        if (intent.hasExtra(string))
-        {
-            reply.setVisibility(View.VISIBLE);
-            reply_view.setVisibility(View.VISIBLE);
-            reply.setText(intent.getStringExtra("reply"));
-        }
-    }
-
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == 1)
-//        {
-//            if (resultCode == RESULT_OK)
-//            {
-//                message_edittext.setText("");
-//                reply.setVisibility(View.VISIBLE);
-//                reply_view.setVisibility(View.VISIBLE);
-//                reply.setText(data.getStringExtra("reply"));
-//            }
-//
-//        }
-//    }
 }
